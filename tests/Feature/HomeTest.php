@@ -2,21 +2,25 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+
 use Tests\TestCase;
 
 class HomeTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function testHomePageWorkingCorrectly()
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertSeeText('Welcome To Laravel');
+        $response->assertSeeText('this is an intro into laravel 8');
+    }
+
+    public function testContactPageIsWorkingCorrectly ()
+    {
+        $response = $this->get('/contact');
+
+        $response->assertSeeText('Contacts Page');
+        $response->assertSeeText('Phone: (803) 867-5309');
+        $response->assertSeeText('Name: Stacies Mom');
     }
 }
