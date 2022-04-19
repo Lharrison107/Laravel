@@ -44,7 +44,7 @@ class PostTest extends TestCase
         $this->assertEquals(session('status'), 'The blog post was created!');
     }
 
-    public function testStoreFail()
+    public function testStoreInvalid()
     {
         $params = [
             'title' => 'x',
@@ -59,6 +59,32 @@ class PostTest extends TestCase
 
         $this->assertEquals($messages['title'][0], 'The title must be at least 5 characters.');
         $this->assertEquals($messages['content'][0], 'The content must be at least 10 characters.');
+    }
+
+    public function testUpdateInvalid() 
+    {
+        $post = $this->createDummyBlogPost();
+
+        $this->assertDatabaseHas('blog_posts', $post->toArray());
+
+        $params = [
+            'title' => 'this is going to be an invalid very very very very very very very very very very very very very very very long title',
+            'content' => 'Content has changed!'
+        ]; 
+
+        
+        $this->post('/posts', $params)
+            ->assertStatus(302)
+            ->assertSessionHas('errors');
+
+        $messages = session('errors')->getMessages();
+
+        $this->assertEquals($messages['title'][0], 'The title may not be greater than 100 characters.');
+
+        $this->assertDatabaseHas('blog_posts', $post->toArray());
+        $this->assertDatabaseMissing('blog_posts', [
+            'title' => 'A new named title'
+        ]);
     }
 
     public function testUpdateValid() 
