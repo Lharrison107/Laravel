@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
-    public function author()
+    public function profile()
     {
-        return $this->belongsTo('App\Author');
+        return $this->hasOne(Profile::class);
     }
 }
