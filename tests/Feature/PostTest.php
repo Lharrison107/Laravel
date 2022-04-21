@@ -32,10 +32,14 @@ class PostTest extends TestCase
 
     public function testStoreValid() 
     {
+        // $user = $this->user();
+
         $params = [
             'title' => 'Valid title',
             'content' => 'At least 10 characters'
         ];
+
+        // $this->actingAs($user);
 
         $this->post('/posts', $params)
             ->assertStatus(302)

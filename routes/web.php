@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,7 @@ Route::get('/single', AboutController::class)
     ->name('single');
 
 Route::resource('posts', PostController::class);
+    // ->middleware('auth');
     // ->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
 // Route::get('/posts', function () use($posts) {
@@ -47,7 +49,7 @@ Route::resource('posts', PostController::class);
 
 Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
     return 'Posts from ' . $daysAgo . ' days ago';
-})->name('posts.recent.index')->middleware();
+})->name('posts.recent.index')->middleware('auth');
 
 Route::prefix('/fun')->name('fun.')->group(function() use($posts){
     Route::get('/responses', function () use($posts) {
@@ -81,3 +83,4 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts){
     })->name('download');
 });
 
+Auth::routes();
