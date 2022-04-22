@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,14 +18,10 @@ class DatabaseSeeder extends Seeder
             $this->command->info('Database was refreshed');
         }
 
-        Cache::tags(['blog-post'])->flush();
-
         $this->call([
             UsersTableSeeder::class, 
             BlogPostsTableSeeder::class, 
-            CommentsTableSeeder::class,
-            TagsTableSeeder::class,
-            BlogPostTagTableSeeder::class
+            CommentsTableSeeder::class
         ]);
     }
 }
