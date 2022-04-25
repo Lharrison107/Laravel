@@ -14,12 +14,21 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->timestamps();
 
-            $table->text('content');
 
-            $table->unsignedBigInteger('blog_post_id')->index();
+            if (env('DB_CONNECTION') === 'sqlite_testing') {
+                $table->text('content')->default('');
+            } else {
+                $table->text('content');
+            }
+
+            if (env('DB_CONNECTION') === 'sqlite_testing') {
+                $table->unsignedBigInteger('blog_post_id')->default(0);
+            } else {
+                $table->unsignedBigInteger('blog_post_id')->index()->nullable();
+            }
             $table->foreign('blog_post_id')->references('id')->on('blog_posts');
         });
     }
