@@ -21,4 +21,12 @@ class BlogPostFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-3 months'),
         ];
     }
+
+    // public function state()
+    // {
+    //     return [
+    //         'title' => 'New title',
+    //         'content' => 'Content of the blog post'
+    //     ];
+    // }
 }

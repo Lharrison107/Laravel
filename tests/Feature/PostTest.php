@@ -138,5 +138,6 @@ class PostTest extends TestCase
         $post->save();
 
         return $post;
+        // return BlogPost::factory()->states('New Title')->create();
     }
 }

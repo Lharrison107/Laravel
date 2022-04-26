@@ -14,7 +14,16 @@
         </div>
     @endif
 
-    @isset($post['has_comments'])
+    <h4>Comments</h4>
+
+    @forelse($post->comments as $comment)
+        <p>{{ $comment->content }}</p>
+        <p class="text-muted">added {{ $comment->created_at->diffForHumans() }}</p>
+    @empty
+        <p>No comments yet!</p>
+    @endforelse
+
+    <!-- @isset($post['has_comments'])
         <div>The post has some comments.... using isset</div>
-    @endisset
+    @endisset -->
 @endsection
