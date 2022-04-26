@@ -14,21 +14,12 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
 
+            $table->text('content');
 
-            if (env('DB_CONNECTION') === 'sqlite_testing') {
-                $table->text('content')->default('');
-            } else {
-                $table->text('content');
-            }
-
-            if (env('DB_CONNECTION') === 'sqlite_testing') {
-                $table->unsignedBigInteger('blog_post_id')->default(0);
-            } else {
-                $table->unsignedBigInteger('blog_post_id')->index()->nullable();
-            }
+            $table->unsignedBigInteger('blog_post_id')->index();
             $table->foreign('blog_post_id')->references('id')->on('blog_posts');
         });
     }
@@ -40,6 +31,10 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropForeign(['blog_post_id']);
+            $table->dropColumn('blog_post_id');
+            $table->dropIfExists('comments');
+        });
     }
 }

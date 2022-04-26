@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Comment;
 
 class CommentFactory extends Factory
 {
@@ -16,8 +16,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'content' => $this->faker->text,
-            'created_at' => $this->faker->dateTimeBetween('-3 months'),
+            'content' => $this->faker->text
         ];
     }
 }
