@@ -30,4 +30,14 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function published()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Lyric Harrison',
+                'email' => 'lharrison@diesellaptops.com',
+            ];
+        });
+    }
 }
