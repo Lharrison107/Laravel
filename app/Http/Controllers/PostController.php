@@ -117,7 +117,7 @@ class PostController extends Controller
         //   abort(403, "!!!You cant update other's posts!!!");  
         // };
 
-        $this->authorize('update-post', $post);
+        $this->authorize('posts-update', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -142,7 +142,7 @@ class PostController extends Controller
         //     abort(403, "!!!You cant delete other's posts!!!");  
         // };
 
-        $this->authorize('delete-post', $post);
+        $this->authorize('posts-delete', $post);
 
         $post->delete();
         
