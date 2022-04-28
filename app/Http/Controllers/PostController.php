@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use Illuminate\Support\Facades\Gate;
 // use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -90,6 +91,14 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403, "!!!You cant update other's posts!!!");  
+        // };
+
+        $this->authorize('update-post', $post);
+
        return view('posts.edit', ['post' => BlogPost::findOrFail($id)]); 
     }
 
@@ -103,6 +112,13 @@ class PostController extends Controller
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //   abort(403, "!!!You cant update other's posts!!!");  
+        // };
+
+        $this->authorize('update-post', $post);
+
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
@@ -121,6 +137,13 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('delete-post', $post)) {
+        //     abort(403, "!!!You cant delete other's posts!!!");  
+        // };
+
+        $this->authorize('delete-post', $post);
+
         $post->delete();
         
         session()->flash('status', 'Blog post was deleted!');
