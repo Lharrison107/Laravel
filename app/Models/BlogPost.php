@@ -26,6 +26,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeMostCommented(Builder $query)
+    {
+        return $query->withCount('comments')->orderBy('comments_count', 'desc');
+    }
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
