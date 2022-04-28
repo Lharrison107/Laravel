@@ -58,5 +58,11 @@ class AuthServiceProvider extends ServiceProvider
            };
         });
 
+        
+        Gate::define('home-secret', function ($user)
+        {
+          return $user->is_admin;
+        });
+
     }
 }
