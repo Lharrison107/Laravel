@@ -3,11 +3,16 @@
         @forelse ($posts as $key => $post)
             <div>
                 <h3>
-                    <a href="{{ route('posts.show', ['post' => $post->id]) }}">
+                    @if ($post->trashed())
+                        <del>
+                    @endif
+                    <a class="{{ $post->trashed() ? 'text-muted' : '' }}" href="{{ route('posts.show', ['post' => $post->id]) }}">
                         {{ $post->title }}
                     </a>
+                    @if ($post->trashed())
+                        </del>
+                    @endif
                 </h3>
-
                 <p class="text-muted">
                     Added {{ $post->created_at->diffForHumans() }}
                 </br>
@@ -23,14 +28,15 @@
                     @can('update-post', $post)
                         <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>
                     @endcan
-
-                    @can('delete-post', $post)
-                        <form action="{{ route('posts.destroy', ['post' => $post-> id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" value="Delete!" class="btn btn-primary">
-                        </form> 
-                    @endcan 
+                    @if (!$post->trashed())
+                        @can('delete-post', $post)
+                            <form action="{{ route('posts.destroy', ['post' => $post-> id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Delete!" class="btn btn-primary">
+                            </form> 
+                        @endcan 
+                    @endif  
                 </div>  
             </div>
         @empty
