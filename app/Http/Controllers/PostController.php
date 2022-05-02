@@ -72,7 +72,7 @@ class PostController extends Controller
         // $post2->save();
         // this is how to get it to fill your model and submit it.
 
-       $request->session()->flash('status', 'The blog post was created!');
+    //    $request->session()->flash('status', 'The blog post was created!');
 
        return redirect()->route('posts.show', ['post' => $post->id]);
     }
@@ -135,7 +135,7 @@ class PostController extends Controller
         $post->fill($validated);
         $post->save();
 
-        $request->session()->flash('status', 'Blog post was updated!!!');
+        // $request->session()->flash('status', 'Blog post was updated!!!');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
     }
@@ -158,7 +158,7 @@ class PostController extends Controller
 
         $post->delete();
         
-        session()->flash('status', 'Blog post was deleted!');
+        // session()->flash('status', 'Blog post was deleted!');
 
         return redirect()->route('posts.index');
     }

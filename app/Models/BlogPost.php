@@ -52,6 +52,7 @@ class BlogPost extends Model
             $blogPost->comments()->restore();
         });
 
-        Blade::component('components.badge', Success::class);
+        Blade::component('components.badge', 'badge');
+        Blade::component('components.updated', 'updated');
     }
 }

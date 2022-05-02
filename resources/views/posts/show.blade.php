@@ -4,21 +4,25 @@
 
 @section('content')
 
-    <h1>{{ $post->title }}</h1>
-    <p> {{ $post->content }} </p>
-    <p>Added {{ $post->created_at->diffForHumans() }}</p>
-
-    @if(now()->diffInMinutes($post->created_at) < 20)
-        <x-badge>
+    <h1>
+        {{ $post->title }}
+        <x-badge :show="now()->diffInMinutes($post->created_at) < 20">
             New Blog Post!
         </x-badge>
-    @endif
+    </h1>
+
+    <p> {{ $post->content }} </p>
+
+    <x-updated :date="$post->created_at" :name="$post->user->name"/>
+    <x-updated :date="$post->updated_at">
+        Updated 
+    </x-updated>   
 
     <h4>Comments</h4>
 
     @forelse($post->comments as $comment)
         <p>{{ $comment->content }}</p>
-        <p class="text-muted"> Added {{ $comment->created_at->diffForHumans() }}</p>
+       <x-updated :date="$comment->created_at" />
     @empty
         <p> No comments yet!</p>
     @endforelse

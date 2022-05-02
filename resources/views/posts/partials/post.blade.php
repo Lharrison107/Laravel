@@ -13,11 +13,8 @@
                         </del>
                     @endif
                 </h3>
-                <p class="text-muted">
-                    Added {{ $post->created_at->diffForHumans() }}
-                </br>
-                    By {{ $post->user->name }}
-                </p>
+
+                <x-updated :date="$post->created_at" :name="$post->user->name"/>
 
                 @if($post->comments_count)
                     <p class="d-inline-flex p-2">{{ $post->comments_count }} comments</p>
