@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Blade;
 
 class BlogPost extends Model
 {
@@ -49,5 +51,7 @@ class BlogPost extends Model
         static::restoring(function (BlogPost $blogPost) {
             $blogPost->comments()->restore();
         });
+
+        Blade::component('components.badge', Success::class);
     }
 }
