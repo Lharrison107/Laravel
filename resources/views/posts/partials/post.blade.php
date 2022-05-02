@@ -61,7 +61,7 @@
                     </ul>
                 </div>
             </div>
-
+{{-- 
             <div class="row mt-4">
                 <div class="card" style="width: 100%;">
                     <div class="card-body">
@@ -77,8 +77,14 @@
                             </li>
                         @endforeach
                     </ul>
-                </div>
-            </div>
+                </div> --}}
+                <x-cards :title="Most Active" :subtitle="Whos got the most to say?">
+                    @slot('items')
+                        {{ collect($mostActive)->pluck('name') }}
+                    @endslot
+                </x-cards>
+
+            {{-- </div> --}}
             <div class="row mt-4">
                 <div class="card" style="width: 100%;">
                     <div class="card-body">
