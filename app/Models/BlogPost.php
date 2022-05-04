@@ -54,5 +54,6 @@ class BlogPost extends Model
 
         Blade::component('components.badge', 'badge');
         Blade::component('components.updated', 'updated');
+        Blade::component('components.cards', 'cards');
     }
 }

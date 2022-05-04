@@ -41,67 +41,32 @@
         @endforelse
     </div>
     <div class="col-4">
-        <div class="container">
-            <div class="row">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <h5 class="card-title">Biggest Topic</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            What's the gosip about? 
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach ($mostCommented as $post)
-                            <li class="list-group-item">
-                                <a href="{{ route('posts.show', ['post' => $post->id]) }}">
-                                    {{ $post->title }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-{{-- 
-            <div class="row mt-4">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <h5 class="card-title">Most Active</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            Whos got the most to say?
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach ($mostActive as $user)
-                            <li class="list-group-item">
-                                {{ $user->name }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div> --}}
-                <x-cards :title="Most Active" :subtitle="Whos got the most to say?">
-                    @slot('items')
-                        {{ collect($mostActive)->pluck('name') }}
-                    @endslot
-                </x-cards>
 
-            {{-- </div> --}}
-            <div class="row mt-4">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <h5 class="card-title">Most Active Last Month</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            who had the most to say last month? 
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach ($mostActiveLastMonth as $user)
-                            <li class="list-group-item">
-                                {{ $user->name }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <x-cards 
+            :title="'Biggest Topic'" 
+            :subtitle="'Whats the gosip about?'">
+            @slot('items')
+                @foreach ($mostCommented as $post)
+                    <li class="list-group-item">
+                        <a href="{{ route('posts.show', ['post' => $post->id]) }}">
+                            {{ $post->title }}
+                        </a>
+                    </li>
+                @endforeach
+            @endslot
+        </x-cards>
+
+        <x-cards 
+            :title="'Most Active'" 
+            :subtitle="'Whos got the most to say?'"
+            :items="collect($mostBlogPosts)->pluck('name')" 
+        />
+        
+        <x-cards 
+            :title="'Most Active Last Month'" 
+            :subtitle="'Who had the most to say?'" 
+            :items="collect($mostBlogPostsLastMonth)->pluck('name')" 
+        />
+        
     </div>
-</div>   
+</div>

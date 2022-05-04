@@ -10,6 +10,7 @@ class Cards extends Component
     public $title;
     public $subtitle;
     public $items;
+
     /**
      * Create a new component instance.
      *
