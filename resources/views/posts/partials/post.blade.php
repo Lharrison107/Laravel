@@ -21,19 +21,22 @@
                 @else
                     <p> No comments yet!</p>
                 @endif
-                <div class="d-flex flex-row">          
-                    @can('update-post', $post)
-                        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>
-                    @endcan
-                    @if (!$post->trashed())
-                        @can('delete-post', $post)
-                            <form action="{{ route('posts.destroy', ['post' => $post-> id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <input type="submit" value="Delete!" class="btn btn-primary">
-                            </form> 
-                        @endcan 
-                    @endif  
+                <div class="d-flex flex-row">  
+                    @auth
+                        @can('update-post', $post)
+                            <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>
+                        @endcan
+                        @if (!$post->trashed())
+                            @can('delete-post', $post)
+                                <form action="{{ route('posts.destroy', ['post' => $post-> id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" value="Delete!" class="btn btn-primary">
+                                </form> 
+                            @endcan 
+                        @endif    
+                    @endauth        
+                   
                 </div>  
             </div>
         @empty

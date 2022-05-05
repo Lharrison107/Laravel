@@ -22,11 +22,12 @@ class BlogPostFactory extends Factory
         ];
     }
 
-    // public function state()
-    // {
-    //     return [
-    //         'title' => 'New title',
-    //         'content' => 'Content of the blog post'
-    //     ];
-    // }
+    public function published()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'title' => 'New title',
+            ];
+        });
+    }
 }
