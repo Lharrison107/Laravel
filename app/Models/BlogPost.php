@@ -29,6 +29,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function tags () 
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function scopeMostCommented(Builder $query)
     {
         return $query->withCount('comments')->orderBy('comments_count', 'desc');
