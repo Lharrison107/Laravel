@@ -21,7 +21,7 @@ class CreateBlogPostTagTable extends Migration
                 ->on('blog_posts')
                 ->onDelete('cascade');
 
-            $table->unsignedInteger('tag_id')->index();
+            $table->unsignedBigInteger('tag_id')->index();
             $table->foreign('tag_id')->references('id')
                 ->on('tags')
                 ->onDelete('cascade');    
