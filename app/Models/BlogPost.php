@@ -31,7 +31,7 @@ class BlogPost extends Model
 
     public function tags () 
     {
-        return $this->belongsToMany(Tag::class, 'blog_post_tag');
+        return $this->belongsToMany(Tag::class);
     }
 
     public function scopeMostCommented(Builder $query)
@@ -61,9 +61,5 @@ class BlogPost extends Model
         static::restoring(function (BlogPost $blogPost) {
             $blogPost->comments()->restore();
         });
-
-        Blade::component('components.badge', 'badge');
-        Blade::component('components.updated', 'updated');
-        Blade::component('components.cards', 'cards');
     }
 }
