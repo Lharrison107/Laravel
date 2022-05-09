@@ -3,34 +3,39 @@
 @section('title', $post->title)
 
 @section('content')
+    <div class="row">
+        <div class="col-8">
+            <h1>
+                {{ $post->title }}
+                <x-badge :show="now()->diffInMinutes($post->created_at) < 20">
+                    New Blog Post!
+                </x-badge>
+            </h1>
 
-    <h1>
-        {{ $post->title }}
-        <x-badge :show="now()->diffInMinutes($post->created_at) < 20">
-            New Blog Post!
-        </x-badge>
-    </h1>
+            <p> {{ $post->content }} </p>
 
-    <p> {{ $post->content }} </p>
+            <x-updated :date="$post->created_at" :name="$post->user->name"/>
+            <x-updated :date="$post->updated_at">
+                Updated 
+            </x-updated>
 
-    <x-updated :date="$post->created_at" :name="$post->user->name"/>
-    <x-updated :date="$post->updated_at">
-        Updated 
-    </x-updated>
+            <x-tags :tags="$post->tags" />
+            
+            <p>Currently Read By {{ $counter }} People</p>
 
-    <x-tags :tags="$post->tags" />
-    
-    <p>Currently Read By {{ $counter }} People</p>
+            <h4>Comments</h4>
 
-    <h4>Comments</h4>
-
-    @forelse($post->comments as $comment)
-        <p>{{ $comment->content }}</p>
-       <x-updated :date="$comment->created_at" />
-    @empty
-        <p> No comments yet!</p>
-    @endforelse
-
+            @forelse($post->comments as $comment)
+                <p>{{ $comment->content }}</p>
+            <x-updated :date="$comment->created_at" />
+            @empty
+                <p> No comments yet!</p>
+            @endforelse
+        </div>
+        <div class="col-4">
+            @include('posts.partials.activity')
+        </div>
+    </div>
     <!-- @isset($post['has_comments'])
         <div>The post has some comments.... using isset</div>
     @endisset -->

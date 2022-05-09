@@ -38,7 +38,7 @@
                             @endcan 
                         @endif    
                     @endauth        
-                   
+                
                 </div>  
             </div>
         @empty
@@ -46,32 +46,6 @@
         @endforelse
     </div>
     <div class="col-4">
-
-        <x-cards 
-            :title="'Biggest Topic'" 
-            :subtitle="'Whats the gosip about?'">
-            @slot('items')
-                @foreach ($mostCommented as $post)
-                    <li class="list-group-item">
-                        <a href="{{ route('posts.show', ['post' => $post->id]) }}">
-                            {{ $post->title }}
-                        </a>
-                    </li>
-                @endforeach
-            @endslot
-        </x-cards>
-
-        <x-cards 
-            :title="'Most Active'" 
-            :subtitle="'Whos got the most to say?'"
-            :items="collect($mostBlogPosts)->pluck('name')" 
-        />
-        
-        <x-cards 
-            :title="'Most Active Last Month'" 
-            :subtitle="'Who had the most to say?'" 
-            :items="collect($mostBlogPostsLastMonth)->pluck('name')" 
-        />
-        
+        @include('posts.partials.activity')
     </div>
 </div>
