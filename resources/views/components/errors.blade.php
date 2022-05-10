@@ -1,11 +1,7 @@
-<div>
-    @if($errors->any())
-        <div class="mt-2 mb-2">
-            @foreach($errors->all() as $error)
-                <div class="alert alert-danger" role="alert">
-                    {{ $error }}
-                </div>
-            @endforeach
+@if($errors)
+    <div class="mt-2 mb-2">
+        <div class="invalid-feeback text-danger">
+            <strong>{{ $errors }}</strong>
         </div>
-    @endif 
-</div>
+    </div>
+@endif 
