@@ -69,6 +69,7 @@ class PostController extends Controller
        $validated = $request->validated();
        $validated['user_id'] = $request->user()->id;
        $post = BlogPost::create($validated);
+       $request->session()->flash('status', 'Blog post was created!');
 
         // $post2 = BlogPost::make();
         // $post2->save();

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
 use Illuminate\Http\Request;
@@ -35,6 +36,12 @@ Route::get('/single', AboutController::class)
     ->name('single');
 
 Route::resource('posts', PostController::class);
+
+Route::get('/posts/tag/{tag}', PostTagController::class . '@index')->name('posts.tags.index');
+
+Route::resource('posts.comments', PostCommentController::class)->only(['store']);
+
+Auth::routes();
     // ->middleware('auth');
     // ->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
@@ -87,7 +94,4 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts){
     })->name('download');
 });
 
-Route::get('/posts/tag/{tag}', PostTagController::class . '@index')->name('posts.tags.index');
 
-
-Auth::routes();

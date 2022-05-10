@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Comment extends Model
 {
@@ -14,7 +15,7 @@ class Comment extends Model
    
    use HasFactory;
 
-   protected $fillable = ['content'];
+   protected $fillable = ['content', 'user_id'];
 
    public function blogPost()
    {
@@ -34,6 +35,11 @@ class Comment extends Model
    public static function boot()
     {
         parent::boot();
+
+        static::creating(function (Comment $comment) {
+            Cache::tags(['blog_post'])->forget("blog-post-{$comment->blog_post_id}");
+            Cache::tags(['blog_post'])->forget('mostCommented');
+        });
 
         // static::addGlobalScope(new LatestScope);
     }
