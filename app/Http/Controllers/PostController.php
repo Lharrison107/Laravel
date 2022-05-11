@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -72,17 +73,12 @@ class PostController extends Controller
        $post = BlogPost::create($validated);
        $request->session()->flash('status', 'Blog post was created!');
 
-        $hasFile = ($request->hasFile('thumbnail'));
-        dump($hasFile);
-
-        if ($hasFile) {
-            $file = $request->file('thumbnail');
-            // dump($file);
-            // dump($file->getClientMimeType());
-            // dump($file->getClientOriginalExtension());
-            dump($file->store('thumbnails'));
-        }
-        die;
+        if (($request->hasFile('thumbnail'))) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+                Image::create(['path' => $path])
+            );
+        };
 
        return redirect()->route('posts.show', ['post' => $post->id]);
     }
