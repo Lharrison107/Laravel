@@ -14,6 +14,9 @@
 
             <p> {{ $post->content }} </p>
 
+            <img src="{{ $post->image->url() }}" />
+            {{-- @dump( $post->image->url()) --}}
+
             <x-updated :date="$post->created_at" :name="$post->user->name"/>
             <x-updated :date="$post->updated_at">
                 Updated 

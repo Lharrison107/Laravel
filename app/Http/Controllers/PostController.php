@@ -68,19 +68,21 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-       $validated = $request->validated();
-       $validated['user_id'] = $request->user()->id;
-       $post = BlogPost::create($validated);
-       $request->session()->flash('status', 'Blog post was created!');
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
+        $blogPost = BlogPost::create($validatedData);
 
-        if (($request->hasFile('thumbnail'))) {
-            $path = $request->file('thumbnail')->store('thumbnails');
-            $post->image()->save(
+        if ($request->hasFile('thumbnail')) {
+            $imageName =  $blogPost->id . '.'.  $request->file('thumbnail')->guessExtension(); 
+            $path = $request->file('thumbnail')->storeAs('thumbnails', $imageName);
+            $blogPost->image()->save(
                 Image::create(['path' => $path])
             );
-        };
+        }
 
-       return redirect()->route('posts.show', ['post' => $post->id]);
+        $request->session()->flash('status', 'Blog post was created!');
+
+        return redirect()->route('posts.show', ['post' => $blogPost->id]);
     }
 
     /**
