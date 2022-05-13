@@ -8,7 +8,10 @@ use App\Models\Image;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Psy\Readline\Hoa\Console;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class PostController extends Controller
 {
@@ -73,6 +76,7 @@ class PostController extends Controller
         $blogPost = BlogPost::create($validatedData);
 
         if ($request->hasFile('thumbnail')) {
+            dd($request);
             $imageName =  $blogPost->id . '.'.  $request->file('thumbnail')->guessExtension(); 
             $path = $request->file('thumbnail')->storeAs('thumbnails', $imageName);
             $blogPost->image()->save(
@@ -171,17 +175,37 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(StorePost $request, $id)
-    {
+    {   
         $post = BlogPost::findOrFail($id);
-
+        
         // if (Gate::denies('update-post', $post)) {
         //   abort(403, "!!!You cant update other's posts!!!");  
-        // };
-
+        // }; 
         $this->authorize('posts-update', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
+        
+        dd($request);
+        if ($request->hasFile('thumbnail')) {
+            // dd($request);
+            $imageName =  $post->id . '.'.  $request->file('thumbnail')->guessExtension(); 
+            $path = $request->file('thumbnail')->storeAs('thumbnails', $imageName);
+            
+            if ($post->image) {
+                Storage::delete($post->image->path);
+                
+                $post->image->path = $path;
+                $post->image->save();
+            } else {
+                $post->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+        }
+
+       
+
         $post->save();
 
         // $request->session()->flash('status', 'Blog post was updated!!!');
