@@ -76,7 +76,6 @@ class PostController extends Controller
         $blogPost = BlogPost::create($validatedData);
 
         if ($request->hasFile('thumbnail')) {
-            dd($request);
             $imageName =  $blogPost->id . '.'.  $request->file('thumbnail')->guessExtension(); 
             $path = $request->file('thumbnail')->storeAs('thumbnails', $imageName);
             $blogPost->image()->save(
@@ -185,8 +184,7 @@ class PostController extends Controller
 
         $validated = $request->validated();
         $post->fill($validated);
-        
-        dd($request);
+
         if ($request->hasFile('thumbnail')) {
             // dd($request);
             $imageName =  $post->id . '.'.  $request->file('thumbnail')->guessExtension(); 
