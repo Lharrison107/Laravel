@@ -24,4 +24,5 @@
     
 </br>
     <input type="file" name="thumbnail" class="form-control-file"/>
+    <x-errors :errors="$errors->first('thumbnail')" />
 </div>
