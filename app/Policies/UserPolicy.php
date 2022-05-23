@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\BlogPost;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BlogPostPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +17,19 @@ class BlogPostPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, BlogPost $blogPost)
+    public function view(User $user, User $model)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,54 +40,54 @@ class BlogPostPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, BlogPost $blogPost)
+    public function update(User $user, User $model)
     {
-        return $user->id == $blogPost->user_id;
+        return $user->id == $model->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, BlogPost $blogPost)
+    public function delete(User $user, User $model)
     {
-        return $user->id == $blogPost->user_id;
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, BlogPost $blogPost)
+    public function restore(User $user, User $model)
     {
-        //
+        return false;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, BlogPost $blogPost)
+    public function forceDelete(User $user, User $model)
     {
-        //
+        return false;
     }
 }
