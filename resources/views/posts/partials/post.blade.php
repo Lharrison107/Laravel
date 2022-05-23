@@ -13,7 +13,7 @@
                 @endif
             </h3>
 
-            <x-updated :date="$post->created_at" :name="$post->user->name"/>
+            <x-updated :date="$post->created_at" :userId="$post->user->id" :name="$post->user->name" />
 
             <x-tags :tags="$post->tags" />
 
