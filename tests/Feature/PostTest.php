@@ -8,22 +8,24 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PostTest extends TestCase
-{   
+{
     use RefreshDatabase;
 
     public function testNoBlogPostsWhenNothingInDatabase()
     {
         $response = $this->get('/posts');
-
-        $response->assertSeeText('No posts found!');
+        $response->assertSeeText('No blog posts yet!');
     }
 
-    Public function testSeeOneBlogPostWhenThereIsNoComments()
+    public function testSee1BlogPostWhenThereIs1WithNoComments()
     {
+        // Arrange
         $post = $this->createDummyBlogPost();
 
+        // Act
         $response = $this->get('/posts');
 
+        // Assert
         $response->assertSeeText('New title');
         $response->assertSeeText('No comments yet!');
 
@@ -32,12 +34,16 @@ class PostTest extends TestCase
         ]);
     }
 
-    Public function testSeeOneBlogPostWithComments()
+    public function testSee1BlogPostWithComments()
     {
-        $post = $this->createDummyBlogPost();
+        // Arrange
+        $user = $this->user();
 
+        $post = $this->createDummyBlogPost();
         Comment::factory(4)->create([
-            'blog_post_id' => $post->id,
+            'commentable_id' => $post->id,
+            'commentable_type' => BlogPost::class,
+            'user_id' => $user->id
         ]);
 
         $response = $this->get('/posts');
@@ -45,111 +51,86 @@ class PostTest extends TestCase
         $response->assertSeeText('4 comments');
     }
 
-
-    public function testStoreValid() 
+    public function testStoreValid()
     {
-        // $user = $this->user();
-
         $params = [
             'title' => 'Valid title',
-            'content' => 'At least 10 characters'
+            'content' => 'At least 10 characters',
         ];
 
-        $this->post('/posts', $params)
-            ->assertStatus(302);  
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
+            ->assertStatus(302)
+            ->assertSessionHas('status');
 
+        $this->assertEquals(session('status'), 'Blog post was created!');
     }
 
-    // public function testStoreInvalid()
-    // {
-    //     $params = [
-    //         'title' => 'x',
-    //         'content' => 'x'
-    //     ]; 
+    public function testStoreFail()
+    {
+        $params = [
+            'title' => 'x',
+            'content' => 'x',
+        ];
 
-    //     $this->post('/posts', $params)
-    //         ->assertStatus(302)
-    //         ->assertSessionHas('errors');
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
+            ->assertStatus(302)
+            ->assertSessionHas('errors');
 
-    //     $messages = session('errors')->getMessages();
+        $messages = session('errors')->getMessages();
 
-    //     $this->assertEquals($messages['title'][0], 'The title must be at least 5 characters.');
-    //     $this->assertEquals($messages['content'][0], 'The content must be at least 10 characters.');
-    // }
+        $this->assertEquals($messages['title'][0], 'The title must be at least 5 characters.');
+        $this->assertEquals($messages['content'][0], 'The content must be at least 10 characters.');
+    }
 
-    // public function testUpdateInvalid() 
-    // {
-    //     $post = $this->createDummyBlogPost();
+    public function testUpdateValid()
+    {
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
 
-    //     $this->assertDatabaseHas('blog_posts', $post->toArray());
+        $this->assertDatabaseHas('blog_posts', $post->toArray());
 
-    //     $params = [
-    //         'title' => 'this is going to be an invalid very very very very very very very very very very very very very very very long title',
-    //         'content' => 'Content has changed!'
-    //     ]; 
+        $params = [
+            'title' => 'A new named title',
+            'content' => 'Content was changed',
+        ];
 
-        
-    //     $this->post('/posts', $params)
-    //         ->assertStatus(302)
-    //         ->assertSessionHas('errors');
+        $this->actingAs($user)
+            ->put("/posts/{$post->id}", $params)
+            ->assertStatus(302);
 
-    //     $messages = session('errors')->getMessages();
+        $this->assertDatabaseMissing('blog_posts', $post->toArray());
+        $this->assertDatabaseHas('blog_posts', [
+            'title' => 'A new named title',
+        ]);
+    }
 
-    //     $this->assertEquals($messages['title'][0], 'The title may not be greater than 100 characters.');
+    public function testDelete()
+    {
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
+        $this->assertDatabaseHas('blog_posts', $post->toArray());
 
-    //     $this->assertDatabaseHas('blog_posts', $post->toArray());
-    //     $this->assertDatabaseMissing('blog_posts', [
-    //         'title' => 'A new named title'
-    //     ]);
-    // }
+        $this->actingAs($user)
+            ->delete("/posts/{$post->id}")
+            ->assertStatus(302);
 
-    // public function testUpdateValid() 
-    // {
-    //     $post = $this->createDummyBlogPost();
+        // $this->assertDatabaseMissing('blog_posts', $post->toArray());
+        $this->assertSoftDeleted('blog_posts', $post->toArray());
+    }
 
-    //     $this->assertDatabaseHas('blog_posts', $post->toArray());
-
-    //     $params = [
-    //         'title' => 'A new named title',
-    //         'content' => 'Content has changed!'
-    //     ]; 
-
-    //     $this->put("/posts/{$post->id}", $params)
-    //         ->assertStatus(302)
-    //         ->assertSessionHas('status');
-
-    //     $this->assertEquals(session('status'), 'Blog post was updated!!!');
-
-    //     $this->assertDatabaseMissing('blog_posts', $post->toArray());
-    //     $this->assertDatabaseHas('blog_posts', [
-    //         'title' => 'A new named title'
-    //     ]);
-    // }
-
-    // public function testDelete()
-    // {
-    //     $post = $this->createDummyBlogPost();
-
-    //     $this->assertDatabaseHas('blog_posts', $post->toArray());
-        
-    //     $this->delete("/posts/{$post->id}")
-    //         ->assertStatus(302)
-    //         ->assertSessionHas('status');
-
-    //     $this->assertEquals(session('status'), 'Blog post was deleted!');
-
-    //     $this->assertDatabaseMissing('blog_posts', $post->toArray());
-       
-    // }
-
-    private function createDummyBlogPost(): BlogPost
+    private function createDummyBlogPost($userId = null): BlogPost
     {
         // $post = new BlogPost();
         // $post->title = 'New title';
         // $post->content = 'Content of the blog post';
         // $post->save();
+        
+        return BlogPost::factory()->published()->create([
+                'user_id' => $userId ?? $this->user()->id,
+        ]);
 
-        return BlogPost::factory()->published()->create();
         // return $post;
     }
 }
