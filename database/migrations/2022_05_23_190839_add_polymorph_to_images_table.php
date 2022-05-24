@@ -28,7 +28,7 @@ class AddPolymorphToImagesTable extends Migration
     public function down()
     {
         Schema::table('images', function (Blueprint $table) {
-            $table->unsignedInteger('blog_post_id')->nullable();
+            $table->unsignedBigInteger('blog_post_id')->nullable();
             $table->dropMorphs('imageable');
         });
     }
