@@ -28,14 +28,14 @@ class CommentsTableSeeder extends Seeder
         
         Comment::factory($commentsCount)->make()->each(function ($comment) use ($posts, $users) {
             $comment->commentable_id = $posts->random()->id;
-            $comment->commentable_type = 'App\BlogPost';
+            $comment->commentable_type = 'App\Models\BlogPost';
             $comment->user_id = $users->random()->id;
             $comment->save();
         });
 
         Comment::factory($commentsCount)->make()->each(function ($comment) use ($users) {
             $comment->commentable_id = $users->random()->id;
-            $comment->commentable_type = 'App\User';
+            $comment->commentable_type = 'App\Models\User';
             $comment->user_id = $users->random()->id;
             $comment->save();
         });
