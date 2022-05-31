@@ -15,7 +15,7 @@ class TagsTableSeeder extends Seeder
     public function run()
     {
         $tags = collect([
-           'Hot Off The Presses',
+           'HotOffThePresses',
            'Sports',
            'Entertainment',
            'Politics',

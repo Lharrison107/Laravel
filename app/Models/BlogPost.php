@@ -3,17 +3,16 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
-use GrahamCampbell\ResultType\Success;
+use App\Traits\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 
 class BlogPost extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
 
     use HasFactory;
 
@@ -32,11 +31,6 @@ class BlogPost extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function tags () 
-    {
-        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 
     public function scopeLatestWithRelations(Builder $query)
