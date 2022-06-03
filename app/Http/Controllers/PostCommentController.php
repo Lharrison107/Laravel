@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogPost;
 use App\Http\Requests\StoreComment;
 use App\Mail\CommentPosted;
+use App\Mail\CommentPostedMarkdown;
 use Illuminate\Support\Facades\Mail;
 
 class PostCommentController extends Controller
@@ -22,7 +23,8 @@ class PostCommentController extends Controller
         ]);
 
         Mail::to($post->user)->send(
-            new CommentPosted($comment)
+            // new CommentPosted($comment)
+            new CommentPostedMarkdown($comment)
         );
 
         return redirect()->back()
