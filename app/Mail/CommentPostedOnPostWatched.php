@@ -13,6 +13,9 @@ class CommentPostedOnPostWatched extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $user;
+    public $comment;
+
     /**
      * Create a new message instance.
      *
