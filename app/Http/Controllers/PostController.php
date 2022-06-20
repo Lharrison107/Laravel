@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Psy\Readline\Hoa\Console;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class PostController extends Controller
 {
@@ -82,6 +80,8 @@ class PostController extends Controller
                 Image::make(['path' => $path])
             );
         }
+
+        event(new BlogPostPosted($blogPost));
 
         $request->session()->flash('status', 'Blog post was created!');
 
