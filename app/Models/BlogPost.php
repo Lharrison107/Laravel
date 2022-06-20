@@ -57,17 +57,5 @@ class BlogPost extends Model
         
         parent::boot();
 
-        static::deleting(function (BlogPost $blogPost) {
-            $blogPost->comments()->delete();
-            Cache::tags(['blog_post'])->forget("blog-post-{$blogPost->id}");
-        });
-
-        static::updating(function (BlogPost $blogPost) {
-            Cache::tags(['blog_post'])->forget("blog-post-{$blogPost->id}");
-        });
-
-        static::restoring(function (BlogPost $blogPost) {
-            $blogPost->comments()->restore();
-        });
     }
 }
