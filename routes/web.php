@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
+use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\UserController;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ Route::resource('posts', PostController::class);
 Route::get('/posts/tag/{tag}', PostTagController::class . '@index')->name('posts.tags.index');
 
 Route::resource('posts.comments', PostCommentController::class)->only(['store']);
-Route::resource('users.comments', 'UserCommentController')->only(['store']);
+Route::resource('users.comments', UserCommentController::class)->only(['store']);
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 
 Route::get('mailable', function () {
