@@ -23,6 +23,18 @@
                     <label>{{ __('Name:') }}</label>
                     <input class="form-control" value="" type="text" name="name" />
                 </div>
+
+                <div class="form-group">
+                    <label>{{ __('Language:') }}</label>
+                    <select class="form-control" name="locale">
+                        @foreach(App\Models\User::LOCALES as $locale => $label)
+                            <option value="{{ $locale }}" {{ $user->locale !== $locale ?: 'selected' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <x-errors :errors="$errors->first('avatar')" />
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="{{ __('Save changes') }}" />
