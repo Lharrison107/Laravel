@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
             <x-cards 
-                :title="'Biggest Topic'" 
-                :subtitle="'Whats the gosip about?'">
+                :title="__('Most Commented')" 
+                :subtitle="__('What people are currently talking about')">
                 @slot('items')
                     @foreach ($mostCommented as $post)
                         <li class="list-group-item">
@@ -17,16 +17,16 @@
 
     <div class="row mt-4">
         <x-cards 
-            :title="'Most Active'" 
-            :subtitle="'Whos got the most to say?'"
+            :title="__('Most Active')" 
+            :subtitle="__('Writers with most posts written')"
             :items="collect($mostBlogPosts)->pluck('name')" 
         />
     </div>
 
     <div class="row mt-4">
         <x-cards 
-            :title="'Most Active Last Month'" 
-            :subtitle="'Who had the most to say?'" 
+            :title="__('Most Active Last Month')" 
+            :subtitle="__('Users with most posts written in the month')" 
             :items="collect($mostBlogPostsLastMonth)->pluck('name')" 
         />
     </div>

@@ -1,7 +1,7 @@
 
 <div class="form-group">
     <strong>
-        <label for="title">Title</label>
+        <label for="title">{{ __('Title') }}</label>
     </strong>
     <input id="title" type="text" name="title" class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" value="{{ old('title', optional($post ?? null)->title) }}">
     <x-errors :errors="$errors->first('title')" />
@@ -9,7 +9,7 @@
 
 <div class="form-group">
     <strong>
-        <label for="content">Content</label>
+        <label for="content">{{ __('Content') }}</label>
     </strong>
     <textarea class="form-control {{ $errors->has('content') ? 'is-invalid' : '' }}" id="content" name="content">
         {{ old('content', optional($post ?? null)->content) }}
@@ -19,7 +19,7 @@
 
 <div class="form-group">
     <strong>
-        <label>Thumbnail</label>
+        <label>{{ __('Thumbnail') }}</label>
     </strong>
     
 </br>
