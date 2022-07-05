@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+// use App\Http\Resources\Comment as CommentResource;
 use App\Contracts\CounterContract;
 use App\Http\ViewComposers\ActivityComposer;
 use App\Models\BlogPost;
@@ -9,6 +10,7 @@ use App\Models\Comment;
 use App\Observers\BlogPostObserver;
 use App\Observers\CommentObserver;
 use App\Services\Counter;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -60,6 +62,9 @@ class AppServiceProvider extends ServiceProvider
             CounterContract::class,
             Counter::class
         );
+
+        // CommentResource::withoutWrapping();
+        JsonResource::withoutWrapping();
 
         // $this->app->when(Counter::class)
         //     ->needs('$timeout')
