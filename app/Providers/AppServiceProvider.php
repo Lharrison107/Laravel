@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\CounterContract;
 use App\Http\ViewComposers\ActivityComposer;
 use App\Models\BlogPost;
 use App\Models\Comment;
@@ -54,6 +55,11 @@ class AppServiceProvider extends ServiceProvider
                 env('COUNTER_TIMEOUT')
             );
         });
+
+        $this->app->bind(
+            CounterContract::class,
+            Counter::class
+        );
 
         // $this->app->when(Counter::class)
         //     ->needs('$timeout')

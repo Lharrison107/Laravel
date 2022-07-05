@@ -6,22 +6,19 @@ use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\Image;
-use App\Models\User;
-use App\Services\Counter;
+use App\Facades\CounterFacade;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     private $counter;
 
-    public function __construct(Counter $counter) 
+    public function __construct() 
     {
         $this->middleware('auth')
             ->only(['create', 'store', 'edit', 'update', 'destroy']);
         // $this->middleware('locale');
-        $this->counter = $counter;
     }
 
     /**
@@ -108,8 +105,8 @@ class PostController extends Controller
         });
 
         return view('posts.show', [
-            'post' => BlogPost::with('comments')->findOrFail($id),
-            'counter' => $this->counter->increment("blog-post-{$id}", ['blog-post']),
+            'post' => $blogPost,
+            'counter' => CounterFacade::increment("blog-post-{$id}", ['blog-post']),
         ]);
     }
 
