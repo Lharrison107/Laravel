@@ -40,11 +40,11 @@ class Handler extends ExceptionHandler
             parent::report($e);
         });
 
-        $this->renderable(function ($request, Exception $exception) {
-            if ($request->expectsJson() && $exception instanceof ModelNotFoundException) {
-                return Route::respondWithRoute('api.fallback');
-            }
-            return parent::render($request, $exception);
-        });
+        // $this->renderable(function ($request, Exception $exception) {
+        //     if ($request->expectsJson() && $exception instanceof ModelNotFoundException) {
+        //         return Route::respondWithRoute('api.fallback');
+        //     }
+        //     return parent::render($request, $exception);
+        // });
     }
 }

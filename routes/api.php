@@ -33,7 +33,10 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 }); 
 
 Route::fallback(function () {
-    return response()->json([
-        'message' => 'Not found'
-    ], 404);
+    return response()->json(
+        [
+            'message' => 'Not found'
+        ], 
+        404
+    );
 })->name('api.fallback');
